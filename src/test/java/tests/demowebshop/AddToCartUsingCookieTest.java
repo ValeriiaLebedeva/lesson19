@@ -28,7 +28,7 @@ public class AddToCartUsingCookieTest {
         RestAssured.baseURI = webShopConfig.apiUrl();
         Configuration.baseUrl = webShopConfig.webUrl();
     }
-
+    @BeforeAll
     static void setup() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
         Configuration.startMaximized = true;
