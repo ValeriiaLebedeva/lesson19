@@ -1,13 +1,16 @@
 package tests.demowebshop;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import config.AppConfig;
+import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 import static com.codeborne.selenide.Selenide.*;
@@ -24,6 +27,18 @@ public class AddToCartUsingCookieTest {
     static void configureBaseUrl() {
         RestAssured.baseURI = webShopConfig.apiUrl();
         Configuration.baseUrl = webShopConfig.webUrl();
+    }
+
+    static void setup() {
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+        Configuration.startMaximized = true;
+        Configuration.remote = "https://user1:1234@selenoid.autotests.cloud/wd/hub/";
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", true);
+
+        Configuration.browserCapabilities = capabilities;
     }
 
     Integer getItemsCountFromCart(String value) {
